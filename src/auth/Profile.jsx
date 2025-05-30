@@ -1,0 +1,321 @@
+import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
+function Profile() {
+  const [user, setUser] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [photo, setPhoto] = useState(null);
+  const [preview, setPreview] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    const usernameLS = localStorage.getItem("username");
+    fetch(`http://localhost:3001/auth/profile?username=${usernameLS}`)
+      .then(res => res.json())
+      .then(data => {
+        setUser(data);
+        setName(data.name);
+        setUsername(data.username);
+        setPreview(data.photo);
+      })
+      .catch(() => setUser(null));
+  }, []);
+
+  const handleEdit = async () => {
+    const { value: passwordInput } = await Swal.fire({
+      title: "Confirma tu contraseña",
+      input: "password",
+      inputLabel: "Introduce tu contraseña actual para editar tu perfil",
+      inputAttributes: {
+        autocapitalize: "off",
+        autocorrect: "off",
+        autocomplete: "current-password",
+        style: "border-radius:20px;border:1px solid #8a2036;padding:10px;width:90%;font-size:1rem;font-family:robotomedium;"
+      },
+      showCancelButton: true,
+      confirmButtonText: "Confirmar",
+      cancelButtonText: "Cancelar",
+      background: "#fff",
+      customClass: {
+        confirmButton: "Register-button",
+        cancelButton: "Register-button"
+      }
+    });
+
+    if (!passwordInput) return;
+
+    // Verifica la contraseña con el backend
+    const usernameLS = localStorage.getItem("username");
+    const res = await fetch("http://localhost:3001/auth/profile/verify-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: usernameLS, password: passwordInput })
+    });
+    const data = await res.json();
+    if (data.success) {
+      setEditMode(true);
+    } else {
+      Swal.fire("Error", "Contraseña incorrecta", "error");
+    }
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    setPhoto(file);
+    if (file) setPreview(URL.createObjectURL(file));
+  };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("username", username);
+    if (photo) formData.append("photo", photo);
+    if (password) formData.append("password", password);
+
+    const usernameLS = localStorage.getItem("username");
+    const res = await fetch(`http://localhost:3001/auth/profile/update?username=${usernameLS}`, {
+      method: "PUT",
+      body: formData,
+    });
+    const data = await res.json();
+    if (data.error) {
+      Swal.fire("Error", data.error, "error");
+    } else {
+      Swal.fire("¡Guardado!", "Perfil actualizado", "success");
+      setUser(data);
+      setEditMode(false);
+      setPassword("");
+      setPhoto(null);
+      // Si cambió el username, actualiza localStorage
+      localStorage.setItem("username", data.username);
+    }
+  };
+
+  const handleDelete = async () => {
+  const { value: passwordInput } = await Swal.fire({
+    title: "Confirma tu contraseña",
+    input: "password",
+    inputLabel: "Introduce tu contraseña actual para eliminar tu cuenta",
+    inputAttributes: {
+      autocapitalize: "off",
+      autocorrect: "off",
+      autocomplete: "current-password",
+      style: "border-radius:20px;border:1px solid #8a2036;padding:10px;width:90%;font-size:1rem;font-family:robotomedium;"
+    },
+    showCancelButton: true,
+    confirmButtonText: "Confirmar",
+    cancelButtonText: "Cancelar",
+    background: "#fff",
+    customClass: {
+      confirmButton: "Register-button",
+      cancelButton: "Register-button"
+    }
+  });
+
+  if (!passwordInput) return;
+
+  // Verifica la contraseña con el backend
+  const usernameLS = localStorage.getItem("username");
+  const res = await fetch("http://localhost:3001/auth/profile/verify-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username: usernameLS, password: passwordInput })
+  });
+  const data = await res.json();
+  if (!data.success) {
+    Swal.fire("Error", "Contraseña incorrecta", "error");
+    return; // si es incorrecta
+  }
+
+  const confirm = await Swal.fire({
+    title: "¿Eliminar cuenta?",
+    text: "Esta acción no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar"
+  });
+  if (confirm.isConfirmed) {
+    const res = await fetch(`http://localhost:3001/auth/profile/delete?username=${usernameLS}`, {
+      method: "DELETE"
+    });
+    const data = await res.json();
+    if (data.error) {
+      Swal.fire("Error", data.error, "error");
+    } else {
+      Swal.fire("Cuenta eliminada", "Tu cuenta ha sido eliminada.", "success");
+      localStorage.clear();
+      window.location.href = "/auth/login";
+    }
+  }
+};
+
+  if (!user) return <div>Cargando perfil...</div>;
+
+  return (
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      marginTop: "40px"
+    }}>
+      {editMode ? (
+        <form onSubmit={handleSave} style={{ width: "100%" }}>
+          {/* Imagen de previsualización */}
+          <div style={{ width: "100%", textAlign: "center" }}>
+            <img
+              src={preview || user.photo}
+              alt="Foto de perfil"
+              style={{
+                width: "180px",
+                height: "180px",
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "6px solid #8a2036",
+                boxShadow: "0 4px 24px rgba(138,32,54,0.15)",
+                background: "#fff",
+                marginBottom: "24px"
+              }}
+            />
+            <label
+              htmlFor="file-upload"
+              style={{
+                display: "inline-block",
+                background: "#8a2036",
+                color: "#fff",
+                borderRadius: "20px",
+                padding: "10px 24px",
+                cursor: "pointer",
+                marginTop: "8px",
+                fontWeight: "bold",
+                fontFamily: "robotomedium, sans-serif",
+                transition: "background 0.2s"
+              }}
+            >
+              Cambiar imagen
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              accept="image/*"
+              onChange={handlePhotoChange}
+              style={{ display: "none" }}
+            />
+            {photo && (
+              <span style={{ marginLeft: "12px", color: "#8a2036", fontSize: "0.95rem" }}>
+                {photo.name}
+              </span>
+            )}
+          </div>
+          <input
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            placeholder="Nombre completo"
+            style={{
+              padding: "10px",
+              borderRadius: "20px",
+              border: "1px solid #8a2036",
+              fontSize: "1rem",
+              width: "100%",
+              marginBottom: "8px"
+            }}
+          />
+          <input
+            type="text"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            placeholder="Usuario"
+            style={{
+              padding: "10px",
+              borderRadius: "20px",
+              border: "1px solid #8a2036",
+              fontSize: "1rem",
+              width: "100%",
+              marginBottom: "8px"
+            }}
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            placeholder="Nueva contraseña (opcional)"
+            style={{
+              padding: "10px",
+              borderRadius: "20px",
+              border: "1px solid #8a2036",
+              fontSize: "1rem",
+              width: "100%",
+              marginBottom: "8px"
+            }}
+          />
+          <button type="submit" className="Register-button" style={{ marginBottom: 8 }}>
+            Guardar cambios
+          </button>
+          <button type="button" onClick={() => setEditMode(false)} style={{
+            background: "#fff",
+            color: "#8a2036",
+            border: "1px solid #8a2036",
+            borderRadius: "20px",
+            padding: "10px 24px",
+            fontWeight: "bold",
+            cursor: "pointer"
+          }}>
+            Cancelar
+          </button>
+        </form>
+      ) : (
+        <>
+          <img
+            src={user.photo}
+            alt="Foto de perfil"
+            style={{
+              width: "180px",
+              height: "180px",
+              borderRadius: "50%",
+              objectFit: "cover",
+              border: "6px solid #8a2036",
+              boxShadow: "0 4px 24px rgba(138,32,54,0.15)",
+              background: "#fff",
+              marginBottom: "24px"
+            }}
+          />
+          <h2 style={{ color: "#8a2036", margin: "0 0 8px 0", fontFamily: "robotomedium" }}>
+            {user.name}
+          </h2>
+          <div style={{
+            color: "#444",
+            fontSize: "1.2rem",
+            background: "#f7eaea",
+            padding: "8px 24px",
+            borderRadius: "16px",
+            fontFamily: "robotomedium"
+          }}>
+            @{user.username}
+          </div>
+          <button onClick={handleEdit} className="Register-button" style={{ marginTop: 24 }}>
+            Editar perfil
+          </button>
+          <button onClick={handleDelete} style={{
+            background: "#fff",
+            color: "#8a2036",
+            border: "1px solid #8a2036",
+            borderRadius: "20px",
+            padding: "10px 24px",
+            fontWeight: "bold",
+            marginTop: "12px",
+            cursor: "pointer"
+          }}>
+            Eliminar cuenta
+          </button>
+        </>
+      )}
+    </div>
+  );
+}
+
+export default Profile;
