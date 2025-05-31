@@ -48,7 +48,7 @@ function MainContent() {
           </div>
           <div className="card">
             <h2>Información Adicional</h2>
-            <p>Consulta tus registros de asistencia y mantente al día con tus actividades.</p>
+            <p>Consulta tu informacion y gestiona comodamente los datos.</p>
           </div>
           <div className="card">
             <h2>Soporte</h2>
