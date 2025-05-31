@@ -30,11 +30,12 @@ function MainContent() {
       </header>
       <br />
       <br />
+      <br/>
       <div className="Lottie-separator">
         <DotLottieReact
           src="https://lottie.host/420891a3-82b3-4cd4-a48d-1921f6703134/etGRfYNbfi.lottie"
-          width={150}
-          height={150}
+          width={25}
+          height={25}
           loop
           autoplay
           className='App-Animation'

@@ -7,7 +7,7 @@ html, body {
   text-align: center;
 }
 .App-header {
-  background-color: #fff5f5;
+  background-color: #f7f5f5;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -17,14 +17,6 @@ html, body {
   color: rgb(0, 0, 0);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 .App-Content1{
   top: 20vh;
   left: 0;
@@ -196,8 +188,8 @@ a:hover::after {
 
 .Lottie-separator {
   position: absolute;
-  top: 120px;
-  left: 100px;
+  top: 30px;
+  left: 0px;
   width: 100%;
   margin-top: 60px;
   margin-bottom: 30px;
