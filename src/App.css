@@ -7,7 +7,7 @@ html, body {
   text-align: center;
 }
 .App-header {
-  background-color: #f7f5f5;
+  background-color: #ffffff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -106,29 +106,30 @@ a:hover::after {
   background: #8a2036;
   position: fixed;
   top: 0;
-  left: -4vw;
+  left: 0vw;
   width: 100vw;
   height: 60px;
   display: flex;
   align-items: center;
   padding-right: 40px;
   z-index: 3;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid #ffffff;
   
 }
 @media (max-width: 768px) {
-  .InicioS-link1, .InicioS-link2, .InicioS-link3, .InicioS-link {
+  .InicioS-link1, .InicioS-link2, .InicioS-link3, .InicioS-link, .InicioS-linkR {
     position: relative;
     top: auto;
     right: auto;
     margin: 20px;
-    padding: 5px;
+    font-size: 1.2rem;
+    padding: 2px;
   }
 }
 
 @media (max-width: 480px) {
-  .InicioS-link1, .InicioS-link2, .InicioS-link3, .InicioS-link {
-    margin: 5px;
+  .InicioS-link1, .InicioS-link2, .InicioS-link3, .InicioS-link, .InicioS-linkR {
+    margin: 10px;
   }
 }
 .App-logo {
@@ -455,15 +456,15 @@ a:hover::after {
 
 @media (max-width: 480px) {
   .InicioS-facebook-link{
-    left: 2%;
+    left: -2%;
   }
 
   .InicioS-instagram-link{
-    left: 10%;
+    left: 3%;
   }
 
   .InicioS-twitter-link{
-    left: 18%;
+    left: 8%;
   }
 }
 .ajustes-button{

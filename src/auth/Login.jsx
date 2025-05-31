@@ -104,6 +104,8 @@ function Login() {
           alt="logo"
         />
       </div>
+      <br />
+      <br />
       <h3 className="Login-Cecytem">
         Cecytem Plantel Nicolas Romero 1
       </h3>

@@ -31,16 +31,6 @@ function MainContent() {
       <br />
       <br />
       <br/>
-      <div className="Lottie-separator">
-        <DotLottieReact
-          src="https://lottie.host/420891a3-82b3-4cd4-a48d-1921f6703134/etGRfYNbfi.lottie"
-          width={25}
-          height={25}
-          loop
-          autoplay
-          className='App-Animation'
-        />
-      </div>
       <h3 className='App-Cecytem'>Colegio de Estudios Cientificos Y Tecnologicos Del Estado de Mexico</h3>
 
       <div className='App-logo'>
@@ -84,7 +74,7 @@ function MainContent() {
         <i className="fab fa-twitter fa-2x"></i>
       </Link>
     </div>
-    <p className="mt-4 text-sm">© 2025 Colegio de Estudios Científicos y Tecnológicos del Estado de México. Todos los derechos reservados.</p>
+    <p className="mt-4 text-sm">© 2025 CECyTEM Plantel Nicolás Romero I. Página Oficial</p>
   </div>
 </footer>
 

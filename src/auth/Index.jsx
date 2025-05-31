@@ -207,7 +207,7 @@ swalWithBootstrapButtons.fire({
   </div>
 </header>
 
-  <div style={{  marginTop: "10vh", marginBottom: "-10vh",display: "flex", alignItems: "center", gap: "10px" }}>
+  <div style={{  marginTop: "14vh", marginBottom: "-10vh",display: "flex", alignItems: "center", gap: "10px" }}>
     <img src={photo} alt="User" style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover" }} />
     <span style={{ fontWeight: "bold", color: "#8a2036", fontSize: "1.2rem"}}>{name}</span>
   </div>
@@ -216,52 +216,6 @@ swalWithBootstrapButtons.fire({
       </h3>
     <button className="Check-button" onClick={CheckTables}>Gestionar entradas y salidas</button>
       
-      <br />
-    <Link
-     to="https://www.facebook.com/somoscecytem"
-     target="_blank"
-     rel="noopener noreferrer"
-     className="facebook-link"
-    >
-    <i className="fab fa-facebook" style={{
-        fontSize: "2.2rem",
-        color: "#8a2036",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-    }}></i>
-    </Link>
-
-
-    <Link
-     to="https://www.instagram.com/somoscecytem/#"
-     target="_blank"
-     rel="noopener noreferrer"
-     className="instagram-link"
-    >
-    <i className="fab fa-instagram" style={{
-        fontSize: "2.2rem",
-        color: "#8a2036",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-    }}></i>
-    </Link>
-
-    <Link
-     to="https://x.com/i/flow/login?redirect_after_login=%2Fsomoscecytem"
-     target="_blank"
-     rel="noopener noreferrer"
-     className="twitter-link"
-    >
-    <i className="fab fa-twitter" style={{
-        fontSize: "2.2rem",
-        color: "#8a2036",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-    }}></i>
-    </Link>
     </>
   );
 }
