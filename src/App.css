@@ -234,7 +234,7 @@ a:hover::after {
  position: static;
   color: #8a2036;
   font-weight: bold;
-  font-size: clamp(2.2rem, 3vw, 3rem); 
+  font-size: clamp(1.8rem, 3vw, 3rem); 
   transition: 0.4s;
   font-family: 'robotomedium';
   pointer-events: none;
