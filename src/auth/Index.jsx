@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import API_URL from "../Api";
 function Index() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -13,7 +14,7 @@ function Index() {
 
     useEffect(() => {
       const usernameLS = localStorage.getItem("username");
-      fetch(`http://localhost:3001/auth/profile?username=${usernameLS}`)
+      fetch(`${API_URL}/auth/profile?username=${usernameLS}`)
         .then(res => res.json())
         .then(data => {
           setUser(data);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import API_URL from "../Api";
 
 function Register() {
   const [name, setName] = useState("");
@@ -89,10 +90,10 @@ function Register() {
     formData.append("name", trimmedName);
     formData.append("photo", photo);
 
-    const response = await fetch('http://localhost:3001/auth/register', {
+    const response = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
-      body: formData,
-    });
+      body: formData, 
+    }); 
     const data = await response.json();
 
     if (data.error) {

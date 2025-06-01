@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Swal from "sweetalert2";
-
+import API_URL from "../Api";
 function Profile() {
   const [user, setUser] = useState(null);
   const [editMode, setEditMode] = useState(false);
@@ -13,7 +13,7 @@ function Profile() {
 
   useEffect(() => {
     const usernameLS = localStorage.getItem("username");
-    fetch(`http://localhost:3001/auth/profile?username=${usernameLS}`)
+    fetch(`${API_URL}/auth/profile?username=${usernameLS}`)
       .then(res => res.json())
       .then(data => {
         setUser(data);
@@ -51,7 +51,7 @@ function Profile() {
 
     // Verifica la contraseña con el backend
     const usernameLS = localStorage.getItem("username");
-    const res = await fetch("http://localhost:3001/auth/profile/verify-password", {
+    const res = await fetch(`${API_URL}/auth/profile/verify-password`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username: usernameLS, password: passwordInput })
@@ -79,7 +79,7 @@ function Profile() {
     if (password) formData.append("password", password);
 
     const usernameLS = localStorage.getItem("username");
-    const res = await fetch(`http://localhost:3001/auth/profile/update?username=${usernameLS}`, {
+    const res = await fetch(`${API_URL}/auth/profile/update?username=${usernameLS}`, {
       method: "PUT",
       body: formData,
     });
@@ -124,7 +124,7 @@ function Profile() {
 
   // Verifica la contraseña con el backend
   const usernameLS = localStorage.getItem("username");
-  const res = await fetch("http://localhost:3001/auth/profile/verify-password", {
+  const res = await fetch(`${API_URL}/auth/login/auth/profile/verify-password`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username: usernameLS, password: passwordInput })
@@ -132,7 +132,7 @@ function Profile() {
   const data = await res.json();
   if (!data.success) {
     Swal.fire("Error", "Contraseña incorrecta", "error");
-    return; // si es incorrecta
+    return; 
   }
 
   const confirm = await Swal.fire({
@@ -144,8 +144,8 @@ function Profile() {
     cancelButtonText: "Cancelar"
   });
   if (confirm.isConfirmed) {
-    const res = await fetch(`http://localhost:3001/auth/profile/delete?username=${usernameLS}`, {
-      method: "DELETE"
+    const res = await fetch(`${API_URL}/auth/profile/delete?username=${usernameLS}`, {
+      method: "DELETE",
     });
     const data = await res.json();
     if (data.error) {

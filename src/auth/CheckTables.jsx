@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import NF from "./../img/NF.png";
-
+import API_URL from "../Api";
 function CheckTables() {
   const [registros, setRegistros] = useState([]);
   const [mostrarTabla, setMostrarTabla] = useState(false);
@@ -15,7 +15,7 @@ function CheckTables() {
   const fileName = location.state?.fileName;
 
   useEffect(() => {
-    fetch("http://localhost:3001/auth/asistencias")
+    fetch(`${API_URL}/auth/asistencias`)
       .then(res => res.json())
       .then(data => {
         console.log("Datos recibidos del backend:", data);
@@ -103,7 +103,7 @@ const columns = Object.keys(registros[0]).filter(col => col !== "fecha_hora" && 
 
   // Verifica la contraseña con el backend
   const usernameLS = localStorage.getItem("username");
-  const res = await fetch("http://localhost:3001/auth/profile/verify-password", {
+  const res = await fetch(`${API_URL}/auth/profile/verify-password`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username: usernameLS, password: passwordInput })
@@ -129,7 +129,7 @@ const columns = Object.keys(registros[0]).filter(col => col !== "fecha_hora" && 
 
   }).then((result) => {
     if (result.isConfirmed) {
-      fetch('http://localhost:3001/auth/asistencias/delete', { method: 'DELETE' })
+      fetch(`${API_URL}/auth/asistencias/delete`, { method: 'DELETE' })
         .then(res => res.json())
         .then(data => {
           if (data.success) {

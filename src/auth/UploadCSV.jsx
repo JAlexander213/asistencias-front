@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import moment from "moment-timezone";
-
+import API_URL from "../Api";
 
 moment.tz.setDefault('America/Mexico_City');
 
@@ -38,7 +38,7 @@ function UploadCSV() {
         header: true,
         skipEmptyLines: true,
         complete: function (results) {
-          fetch('http://localhost:3001/auth/uploadAsistencias', {
+          fetch(`${API_URL}/auth/uploadAsistencias`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ registros: results.data })
@@ -71,7 +71,7 @@ function UploadCSV() {
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
-        fetch('http://localhost:3001/auth/uploadAsistencias', {
+        fetch(`${API_URL}/auth/uploadAsistencias`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ registros: jsonData })
