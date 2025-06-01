@@ -15,20 +15,18 @@ function Profile() {
   useEffect(() => {
     const usernameLS = localStorage.getItem("username");
     fetch(`${API_URL}/auth/profile?username=${usernameLS}`)
+      .then(res => res.json())
       .then(data => {
-    if (data.error || !data.username) {
-      localStorage.clear();
-      navigate("/auth/login", { replace: true });
-    } else {
-    setUser(data);
-    setName(data.name);
-    setUsername(data.username);
-    setPreview(data.photo);
-    }
-  })
-
+        setUser(data);
+        setName(data.name);
+        setUsername(data.username);
+        setPreview(data.photo);
+      })
       .catch(() => setUser(null));
   }, []);
+  if (user === null) {
+        navigate("/auth/login", { replace: true });
+      }
 
   const handleEdit = async () => {
     const { value: passwordInput } = await Swal.fire({
