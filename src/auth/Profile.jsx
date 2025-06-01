@@ -24,9 +24,9 @@ function Profile() {
       })
       .catch(() => setUser(null));
   }, []);
-  if (user === null) {
+  if (!user) {
         navigate("/auth/login", { replace: true });
-      }
+    }
 
   const handleEdit = async () => {
     const { value: passwordInput } = await Swal.fire({
