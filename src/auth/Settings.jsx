@@ -65,15 +65,7 @@ function Settings() {
         }}
       >
         <h3
-          className="Login-Cecytem"
-          style={{
-            color: "var(--main-color)",
-            fontWeight: "bold",
-            marginBottom: 24,
-            fontSize: "1.7rem",
-            letterSpacing: "1px",
-            textAlign: "center",
-          }}
+          style={{ color: "var(--main-color)", fontWeight: "bold", fontSize: "1.5rem", marginBottom: 28 }}
         >
           Ajustes de la aplicación
         </h3>

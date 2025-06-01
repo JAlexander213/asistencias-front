@@ -241,10 +241,12 @@ function Profile() {
               borderRadius: "20px",
               border: "1px solid #8a2036",
               fontSize: "1rem",
-              width: "100%",
+              width: "70%",
               marginBottom: "8px"
             }}
           />
+          <br />
+          <br />
           <input
             type="text"
             value={username}
@@ -255,10 +257,12 @@ function Profile() {
               borderRadius: "20px",
               border: "1px solid #8a2036",
               fontSize: "1rem",
-              width: "100%",
+              width: "70%",
               marginBottom: "8px"
             }}
           />
+          <br />
+          <br />
           <input
             type="password"
             value={password}
@@ -269,10 +273,11 @@ function Profile() {
               borderRadius: "20px",
               border: "1px solid #8a2036",
               fontSize: "1rem",
-              width: "100%",
+              width: "70%",
               marginBottom: "8px"
             }}
           />
+          <br /><br />
           <button type="submit" className="Register-button" style={{ marginBottom: 8 }}>
             Guardar cambios
           </button>
