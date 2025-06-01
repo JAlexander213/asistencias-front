@@ -60,7 +60,6 @@ function Register() {
     return;
   }
 
-  // Validar contraseña: sin espacios, mínimo 3 caracteres
   if (/\s/.test(trimmedPassword)) {
     Swal.fire({
       icon: "error",

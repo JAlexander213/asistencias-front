@@ -351,7 +351,7 @@ a:hover::after {
 }
 
 .twitter-link::after {
-  display: none !important; /* Esto elimina la rayita animada solo aquí */
+  display: none !important; 
 }
 
 .twitter-link:hover {
@@ -532,8 +532,8 @@ a:hover::after {
 }
 
 .card {
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #a79e9e;
   border-radius: 8px;
   padding: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -613,4 +613,25 @@ a:hover::after {
   transition: background 0.3s;
   background-color: #160f0f;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.created-by {
+  color: #ffffff; 
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  background-color: #000000;
+  padding: 6px 15px; 
+  border-radius: 30px; 
+  transition: all 0.3s ease-in-out;
+}
+
+.created-by:hover {
+  color: #0cb8b8; 
+}
+@media screen and (max-width: 768px) {
+  .created-by {
+    font-size: 1.2rem; 
+  }
 }

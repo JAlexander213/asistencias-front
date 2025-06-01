@@ -38,31 +38,35 @@ function MainContent() {
       </div>
       <br/>
       <div className='App-Content1'>
-        <h1 className="App-title">Sistema de Control de Actividades</h1>
+        <h1 className="App-title">CECyTEM <br/>
+          Information Manager</h1>
         
         <div className="grid-container">
           <div className="card">
-            <h2>Bienvenido</h2>
-            <p>Al sistema de asistencia e inasistencia del Colegio de Estudios Cientificos Y Tecnologicos Del Estado de Mexico.</p>
-            <p>Aquí podrás registrar tu asistencia y inasistencia de manera fácil y segura.</p>
+            <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#8a2036' }}>Bienvenido 
+              <br/>
+              a CIM</h2> 
+            <p style={{ fontFamily: 'Arial, sans-serif', color: '#000' }}>CIM <br/>(Cecytem Information Manager) <br/>Es un sistema amigable que se encarga de proteger tu informacion </p>
+            <p style={{ fontFamily: 'Arial, sans-serif', color: '#000' }}>Aquí podrás registrar tu asistencia y inasistencia de manera fácil y segura.</p>
           </div>
           <div className="card">
-            <h2>Información Adicional</h2>
-            <p>Consulta tu informacion y gestiona comodamente los datos.</p>
+            <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#8a2036' }}>Información Adicional</h2>
+            <p style={{ fontFamily: 'Arial, sans-serif', color: '#000' }}>Consulta tu informacion y gestiona comodamente los datos.</p>
           </div>
           <div className="card">
-            <h2>Soporte</h2>
-            <p>Si tienes alguna duda, no dudes en contactarnos a través de nuestras redes sociales.</p>
+            <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#8a2036' }}>Soporte</h2>
+            <br/>
+            <p style={{ fontFamily: 'Arial, sans-serif', color: '#000' }}>En caso de tener problemas, <br/> Haz una consulta con el desarrollador de la pagina</p>
           </div>
           <div className="card">
-            <h2>Recursos</h2>
-            <p>Accede a materiales y recursos útiles para tu aprendizaje.</p>
+            <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#8a2036' }}>Recursos</h2>
+            <p style={{ fontFamily: 'Arial, sans-serif', color: '#000' }}> Accede a materiales y recursos útiles para tu aprendizaje.</p>
           </div>
         </div>
       </div>
 <footer className="bg-white text-black py-8 border-t border-gray-300">
   <div className="container mx-auto text-center">
-    <h2 className="text-2xl font-bold mb-4">Contáctanos</h2>
+    <h2 style={{ marginBottom: '20px', marginRight: '10px' }}>Contáctanos</h2>
     <div className="flex justify-center space-x-6 mb-4">
       <Link to="https://www.facebook.com/somoscecytem" target="_blank" rel="noopener noreferrer" className="InicioS-facebook-link">
         <i className="fab fa-facebook fa-2x"></i>
@@ -74,7 +78,9 @@ function MainContent() {
         <i className="fab fa-twitter fa-2x"></i>
       </Link>
     </div>
-    <p className="mt-4 text-sm">© 2025 CECyTEM Plantel Nicolás Romero I. Página Oficial</p>
+    <p className="mt-4 text-sm" style={{ fontFamily: 'Arial, sans-serif', marginBottom: '24px' }}>© 2025 CECyTEM Plantel Nicolás Romero I. <br/>
+    Página Oficial Del Plantel</p>
+    <p className="created-by">Created by Jovan Alexander</p>
   </div>
 </footer>
 
