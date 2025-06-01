@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, replace , useNavigate} from "react-router-dom";
 import Swal from "sweetalert2";
 import API_URL from "../Api";
 function Profile() {
@@ -10,17 +10,23 @@ function Profile() {
   const [photo, setPhoto] = useState(null);
   const [preview, setPreview] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const usernameLS = localStorage.getItem("username");
     fetch(`${API_URL}/auth/profile?username=${usernameLS}`)
-      .then(res => res.json())
       .then(data => {
-        setUser(data);
-        setName(data.name);
-        setUsername(data.username);
-        setPreview(data.photo);
-      })
+    if (data.error || !data.username) {
+      localStorage.clear();
+      navigate("/auth/login", { replace: true });
+    } else {
+    setUser(data);
+    setName(data.name);
+    setUsername(data.username);
+    setPreview(data.photo);
+    }
+  })
+
       .catch(() => setUser(null));
   }, []);
 
@@ -156,7 +162,7 @@ function Profile() {
     } else {
       Swal.fire("Cuenta eliminada", "Tu cuenta ha sido eliminada.", "success");
       localStorage.clear();
-      window.location.href = "/auth/login";
+      navigate("/auth/login", { replace: true });
     }
   }
 };

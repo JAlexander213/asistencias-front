@@ -207,10 +207,10 @@ swalWithBootstrapButtons.fire({
   </div>
 </header>
 
+  
   <div style={{  marginTop: "14vh", marginBottom: "-10vh",display: "flex", alignItems: "center", gap: "10px" }}>
     <img 
     src={photo}
-     alt={vacio}
       style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover" }}
         onLoad={(e) => {
         e.target.src = photo; 
