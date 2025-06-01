@@ -50,8 +50,8 @@ function Index() {
 
 const swalWithBootstrapButtons = Swal.mixin({
   customClass: {
-    confirmButton: "btn btn-success",
-    cancelButton: "btn btn-danger"
+    confirmButton: "confirmar-button",
+    cancelButton: "cancelar-button"
   },
   buttonsStyling: false
 });
@@ -62,7 +62,6 @@ swalWithBootstrapButtons.fire({
   showCancelButton: true,
   confirmButtonText: "Si, cerrar sesion",
   cancelButtonText: "No, cancelar",
-  reverseButtons: true
 }).then((result) => {
   if (result.isConfirmed) {
     swalWithBootstrapButtons.fire({
@@ -74,7 +73,6 @@ swalWithBootstrapButtons.fire({
     navigate("/auth/login", { replace: true });
     window.location.reload();
   } else if (
-    /* Read more about handling dismissals below */
     result.dismiss === Swal.DismissReason.cancel
   ) {
     swalWithBootstrapButtons.fire({

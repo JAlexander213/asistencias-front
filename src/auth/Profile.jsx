@@ -33,15 +33,17 @@ function Profile() {
         autocapitalize: "off",
         autocorrect: "off",
         autocomplete: "current-password",
-        style: "border-radius:20px;border:1px solid #8a2036;padding:10px;width:90%;font-size:1rem;font-family:robotomedium;"
       },
       showCancelButton: true,
       confirmButtonText: "Confirmar",
       cancelButtonText: "Cancelar",
       background: "#fff",
       customClass: {
-        confirmButton: "Register-button",
-        cancelButton: "Register-button"
+        input: "password-button",
+        inputLabel: "password-label",
+        confirmButton: "confirmar-button",
+        cancelButton: "cancelar-button",
+        title: "title-alert",
       }
     });
 
@@ -104,15 +106,17 @@ function Profile() {
       autocapitalize: "off",
       autocorrect: "off",
       autocomplete: "current-password",
-      style: "border-radius:20px;border:1px solid #8a2036;padding:10px;width:90%;font-size:1rem;font-family:robotomedium;"
     },
     showCancelButton: true,
     confirmButtonText: "Confirmar",
     cancelButtonText: "Cancelar",
     background: "#fff",
     customClass: {
-      confirmButton: "Register-button",
-      cancelButton: "Register-button"
+      input: "password-button",
+        inputLabel: "password-label",
+        confirmButton: "confirmar-button",
+        cancelButton: "cancelar-button",
+        title: "title-alert",
     }
   });
 
