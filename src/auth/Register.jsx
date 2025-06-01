@@ -50,7 +50,6 @@ function Register() {
     return;
   }
 
-  // Validar usuario: letras o letras+numeros
   if (!/^(?=.*[A-Za-z])[A-Za-z0-9]+$/.test(trimmedUser)) {
     Swal.fire({
       icon: "error",

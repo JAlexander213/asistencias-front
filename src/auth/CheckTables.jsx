@@ -67,7 +67,7 @@ function CheckTables() {
         <div style={{ padding: 32 }}>
           <h1 className="Login-Cecytem" style={{ marginTop: "-80px" }}>Registros</h1>
           <br />
-          <p style={{ fontSize: "1.5rem", color: "rgb(0, 0, 0)", fontFamily: "cursive" }}>
+          <p style={{ fontSize: "1.5rem", color: "rgb(0, 0, 0)", fontFamily: "sans-serif", fontWeight: "bold" }}>
             No hay registros actualmente
           </p>
           <span style={{ fontSize: "1.1rem", fontFamily: "sans-serif", fontWeight: "bold", color: "rgb(43, 42, 42)" }}>
