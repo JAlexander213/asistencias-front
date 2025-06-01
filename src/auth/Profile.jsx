@@ -113,18 +113,19 @@ function Profile() {
     background: "#fff",
     customClass: {
       input: "password-button",
-        inputLabel: "password-label",
-        confirmButton: "confirmar-button",
-        cancelButton: "cancelar-button",
-        title: "title-alert",
+      inputLabel: "password-label",
+      confirmButton: "confirmar-button",
+      cancelButton: "cancelar-button",
+      title: "title-alert",
     }
   });
 
   if (!passwordInput) return;
 
-  // Verifica la contraseña con el backend
   const usernameLS = localStorage.getItem("username");
-  const res = await fetch(`${API_URL}/auth/login/auth/profile/verify-password`, {
+
+  // Verifica contraseña
+  const res = await fetch(`${API_URL}/auth/profile/verify-password`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username: usernameLS, password: passwordInput })
@@ -143,11 +144,13 @@ function Profile() {
     confirmButtonText: "Sí, eliminar",
     cancelButtonText: "Cancelar"
   });
+
   if (confirm.isConfirmed) {
     const res = await fetch(`${API_URL}/auth/profile/delete?username=${usernameLS}`, {
       method: "DELETE",
     });
     const data = await res.json();
+
     if (data.error) {
       Swal.fire("Error", data.error, "error");
     } else {
@@ -157,6 +160,7 @@ function Profile() {
     }
   }
 };
+
 
   if (!user) return <div>Cargando perfil...</div>;
 
