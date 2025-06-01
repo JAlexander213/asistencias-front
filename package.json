@@ -23,7 +23,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "obfuscate": "obfuscate-js --config obfuscate.config.js"
+    "obfuscate": "obfuscate-js --config obfuscate.config.js",
+    "postbuild": "javascript-obfuscator build/static/js --output build/static/js --compact true --control-flow-flattening true"
   },
   "eslintConfig": {
     "extends": [
