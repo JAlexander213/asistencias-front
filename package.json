@@ -23,7 +23,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "obfuscate": "javascript-obfuscator dist --output dist --compact true --self defending true"
+    "obfuscate": "obfuscate-js --config obfuscate.config.js"
   },
   "eslintConfig": {
     "extends": [
@@ -44,6 +44,7 @@
     ]
   },
   "devDependencies": {
-    "javascript-obfuscator": "^4.1.1"
+    "javascript-obfuscator": "^4.1.1",
+    "obfuscate-js": "^0.0.3"
   }
 }
