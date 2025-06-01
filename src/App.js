@@ -102,6 +102,30 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/auth/uploadCSV"
+          element={
+            <ProtectedRoute>
+              <UploadCSV />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/auth/checkTables"
+          element={
+            <ProtectedRoute>
+              <CheckTables />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/auth/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<MainContent />} />
       </Routes>
     </div>

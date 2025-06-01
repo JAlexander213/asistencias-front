@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
 import { useNavigate } from "react-router-dom";
@@ -95,6 +95,13 @@ function UploadCSV() {
       reader.readAsArrayBuffer(file);
     }
   };
+
+  useEffect(() => {
+  const auth = localStorage.getItem("auth");
+  if (!auth) {
+    navigate("/auth/login", { replace: true });
+  }
+}, [navigate]);
 
   return (
     <div

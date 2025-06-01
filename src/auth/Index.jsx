@@ -72,8 +72,8 @@ swalWithBootstrapButtons.fire({
       icon: "success"
     });
     localStorage.removeItem("auth");
-    navigate("/auth/login", { replace: true });
-    window.location.reload();
+    window.location.replace("/auth/login");
+
   } else if (
     result.dismiss === Swal.DismissReason.cancel
   ) {

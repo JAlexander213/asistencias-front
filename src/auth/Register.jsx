@@ -19,14 +19,9 @@ function Register() {
       navigate("/auth/index", { replace: true });
     }
   }, [navigate]);
-  useEffect(() => {
-    if (localStorage.getItem("auth") === "false") {
-      navigate("/auth/login", { replace: true });
-    }
-  })
 
  const handleSubmit = async (e) => {
-  e.preventDefault();
+  e.preventDefault(); 
 
   // Quitar espacios al inicio y final
   const trimmedName = name.trim();

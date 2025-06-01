@@ -15,6 +15,14 @@ function CheckTables() {
   const fileName = location.state?.fileName;
 
   useEffect(() => {
+  const auth = localStorage.getItem("auth");
+  if (!auth) {
+    navigate("/auth/login", { replace: true });
+  }
+}, [navigate]);
+
+
+  useEffect(() => {
     fetch(`${API_URL}/auth/asistencias`)
       .then(res => res.json())
       .then(data => {
@@ -72,6 +80,7 @@ function CheckTables() {
     );
   }
 
+  
 const columns = Object.keys(registros[0]).filter(col => col !== "fecha_hora" &&  "fecha_hora_formateada");
 
 
@@ -150,11 +159,14 @@ const columns = Object.keys(registros[0]).filter(col => col !== "fecha_hora" && 
   });
 };
 
+
+
   // Filtra los registros por profesor
 const registrosFiltrados = filtroProfesor
   ? registros.filter(r => r.nombre.toLowerCase().includes(filtroProfesor.toLowerCase()))
   : registros;
 
+  
   return (
     <div style={{ padding: 32 }}>
       <header className="InicioS-header">

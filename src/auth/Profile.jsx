@@ -13,6 +13,14 @@ function Profile() {
   const navigate = useNavigate();
 
   useEffect(() => {
+  const auth = localStorage.getItem("auth");
+  if (!auth) {
+    navigate("/auth/login", { replace: true });
+  }
+}, [navigate]);
+
+
+  useEffect(() => {
     const usernameLS = localStorage.getItem("username");
     fetch(`${API_URL}/auth/profile?username=${usernameLS}`)
       .then(res => res.json())

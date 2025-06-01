@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Settings() {
   // Lee el tema guardado en localStorage o usa claro por defecto
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
+  const navigate= useNavigate();
   useEffect(() => {
     // Aplica la clase al body según el tema
     document.body.classList.toggle("dark-theme", theme === "dark");
@@ -19,6 +20,14 @@ function Settings() {
     document.body.classList.toggle("light-theme", theme === "light");
     alert("¡Ajustes guardados!");
   };
+
+  useEffect(() => {
+  const auth = localStorage.getItem("auth");
+  if (!auth) {
+    navigate("/auth/login", { replace: true });
+  }
+}, [navigate]);
+
 
   return (
     <div
