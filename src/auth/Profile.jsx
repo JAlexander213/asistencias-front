@@ -101,7 +101,7 @@ function Profile() {
   const { value: passwordInput } = await Swal.fire({
     title: "Confirma tu contraseña",
     input: "password",
-    inputLabel: "Introduce tu contraseña actual para eliminar tu cuenta",
+    inputLabel: "Ingresa tu contraseña para eliminar tu cuenta",
     inputAttributes: {
       autocapitalize: "off",
       autocorrect: "off",

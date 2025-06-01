@@ -473,7 +473,7 @@ a:hover::after {
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
-  transition:  0.3s;
+  transition:  0.2s;
 }
 .ajustes-button:hover{
   background-color: #60a0db;
@@ -482,7 +482,7 @@ a:hover::after {
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
-  transition:  0.3s;
+  transition:  0.2s;
 }
 .cerrar-sesion-button:hover{
   background-color: #fc4343;
@@ -509,19 +509,19 @@ a:hover::after {
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 .uploadCSV-button:hover{
-  background-color: #8affb1;
+  background-color: #25f069;
 }
 .accountI-button{
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.2s;
 }
 .accountI-button:hover{
-  background-color: #fffd9d;
+  background-color: #f1ef65;
 }
 
 .grid-container {

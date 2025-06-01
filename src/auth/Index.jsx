@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import API_URL from "../Api";
+import vacio from "../img/vacio.png";
 function Index() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -207,7 +208,18 @@ swalWithBootstrapButtons.fire({
 </header>
 
   <div style={{  marginTop: "14vh", marginBottom: "-10vh",display: "flex", alignItems: "center", gap: "10px" }}>
-    <img src={photo} alt="User" style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover" }} />
+    <img 
+    src={photo}
+     alt={vacio}
+      style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover" }}
+        onLoad={(e) => {
+        e.target.src = photo; 
+        }}
+      onError={(e) => {
+        e.target.src = {vacio}; 
+      }}
+      />
+    
     <span style={{ fontWeight: "bold", color: "#8a2036", fontSize: "1.2rem"}}>{name}</span>
   </div>
       <h3 className="Login-Cecytem">
