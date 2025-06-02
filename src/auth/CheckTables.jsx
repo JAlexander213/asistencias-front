@@ -1,59 +1,133 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import NF from "./../img/NF.png";
 import API_URL from "../Api";
+
 function CheckTables() {
   const [registros, setRegistros] = useState([]);
-  const [mostrarTabla, setMostrarTabla] = useState(false);
+  const [mostrarTabla, setMostrarTabla] = useState(false); // Cambiado a false inicialmente
   const [error, setError] = useState(null);
-  const [profesores, setProfesores] = useState([]);  // ← lista de nombres únicos
-  const [filtroProfesor, setFiltroProfesor] = useState("");  // ← nombre seleccionado
+  const [profesores, setProfesores] = useState([]);
+  const [filtroProfesor, setFiltroProfesor] = useState("");
+  const [archivosSubidos, setArchivosSubidos] = useState([]);
+  const [archivoSeleccionado, setArchivoSeleccionado] = useState(null);
+  const [busqueda, setBusqueda] = useState("");
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const fileName = location.state?.fileName;
 
+  // Cargar datos iniciales
   useEffect(() => {
-  const auth = localStorage.getItem("auth");
-  if (!auth) {
-    navigate("/auth/login", { replace: true });
+    const auth = localStorage.getItem("auth");
+    if (!auth) {
+      navigate("/auth/login", { replace: true });
+      return;
+    }
+
+    cargarDatosIniciales();
+  }, [navigate]);
+
+  const cargarDatosIniciales = async () => {
+    try {
+      // Cargar lista de archivos
+      const resArchivos = await fetch(`${API_URL}/auth/asistencias/archivos`);
+      const dataArchivos = await resArchivos.json();
+      setArchivosSubidos(dataArchivos.map(archivo => ({ name: archivo })));
+
+      // Cargar profesores
+      const resProfesores = await fetch(`${API_URL}/auth/asistencias`);
+      const dataProfesores = await resProfesores.json();
+      
+      if (Array.isArray(dataProfesores)) {
+        const nombresUnicos = [...new Set(
+          dataProfesores
+            .map(r => r.nombre)
+            .filter(nombre => typeof nombre === "string" && nombre.trim() !== "")
+        )];
+        setProfesores(nombresUnicos);
+      }
+    } catch (err) {
+      setError("Error al cargar datos iniciales");
+    }
+  };
+
+  const cargarRegistros = async () => {
+    try {
+      let url = `${API_URL}/auth/asistencias`;
+      if (archivoSeleccionado) {
+        url = `${API_URL}/auth/asistencias/por-archivo/${encodeURIComponent(archivoSeleccionado)}`;
+      }
+
+      const res = await fetch(url);
+      const data = await res.json();
+      
+      if (Array.isArray(data)) {
+        setRegistros(data);
+        setMostrarTabla(true);
+      } else {
+        setError("Formato de datos inválido");
+      }
+    } catch (err) {
+      setError("Error al cargar registros");
+    }
+  };
+
+  const handleDelete = async () => {
+  const result = await Swal.fire({
+    title: '¿Estás seguro?',
+    text: 'Se eliminarán todos los registros. Esta acción no se puede deshacer.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Sí, eliminar todo',
+  });
+
+  if (result.isConfirmed) {
+    try {
+      const res = await fetch(`${API_URL}/auth/asistencias/delete`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (res.ok) {
+        Swal.fire('Eliminado', 'Se eliminaron ' + registros.length + ' registros.', 'success');
+        setRegistros([]);
+        setMostrarTabla(false);
+      } else {
+        throw new Error('Error al eliminar registros');
+      }
+    } catch (error) {
+      Swal.fire('Error', 'No se pudieron eliminar los registros.', 'error');
+    }
   }
-}, [navigate]);
+};
 
+  const registrosFiltrados = registros.filter(registro => {
+    const cumpleArchivo = !archivoSeleccionado || registro.archivo === archivoSeleccionado;
+    const cumpleProfesor = !filtroProfesor || 
+      registro.nombre?.toLowerCase().includes(filtroProfesor.toLowerCase());
+    const cumpleBusqueda = !busqueda || 
+      Object.values(registro).some(val => 
+        String(val).toLowerCase().includes(busqueda.toLowerCase())
+      );
+    return cumpleArchivo && cumpleProfesor && cumpleBusqueda;
+  });
 
-  useEffect(() => {
-    fetch(`${API_URL}/auth/asistencias`)
-      .then(res => res.json())
-      .then(data => {
-        console.log("Datos recibidos del backend:", data);
-        if (Array.isArray(data)) {
-          setRegistros(data);
-
-          const nombresUnicos = [...new Set(
-            data
-              .map(r => r.nombre) 
-              .filter(nombre => typeof nombre === "string" && nombre.trim() !== "")
-          )];
-          setProfesores(nombresUnicos);  
-        } else {
-          setError("No se pudieron cargar los registros");
-        }
-      })
-      .catch(() => setError("Error de conexión con el servidor"));
-  }, []);
-
+  const columns = registros[0] 
+    ? Object.keys(registros[0]).filter(col => !["fecha_hora", "fecha_hora_formateada"].includes(col))
+    : [];
 
   if (error) {
     return (
       <div style={{ padding: 32 }}>
         <h1>Error</h1>
         <p>{error}</p>
+        <button onClick={cargarDatosIniciales} className="Login-Cecytem">Reintentar</button>
       </div>
     );
   }
 
-  if (!registros.length) {
+  if (!registros.length && mostrarTabla) {
     return (
       <>
         <header className="InicioS-header">
@@ -66,252 +140,220 @@ function CheckTables() {
         </header>
         <div style={{ padding: 32 }}>
           <h1 className="Login-Cecytem" style={{ marginTop: "-80px" }}>Registros</h1>
-          <br />
-          <p style={{ fontSize: "1.5rem", color: "rgb(0, 0, 0)", fontFamily: "sans-serif", fontWeight: "bold" }}>
+          <p style={{ fontSize: "1.5rem", color: "rgb(0, 0, 0)", fontWeight: "bold" }}>
             No hay registros actualmente
           </p>
-          <span style={{ fontSize: "1.1rem", fontFamily: "sans-serif", fontWeight: "bold", color: "rgb(43, 42, 42)" }}>
-            ¡Sé el primero en subir un archivo!
-          </span>
-          <br />
           <img src={NF} alt="Not found" style={{ width: "400px", borderRadius: "50%" }} />
         </div>
       </>
     );
   }
 
-  
-const columns = Object.keys(registros[0]).filter(col => col !== "fecha_hora" &&  "fecha_hora_formateada");
 
+return (
+  <div style={{ padding: 32 }}>
+    <header className="InicioS-header">
+      <Link className="InicioS-link2" to={"/auth/index"}>
+        Pagina principal
+      </Link>
+      <Link className="InicioS-link" to={"/auth/uploadCSV"}>
+        Subir archivo
+      </Link>
+    </header>
 
-  const handleDelete = async () => {
-  const { value: passwordInput } = await Swal.fire({
-    title: "Confirma tu contraseña",
-    input: "password",
-    inputLabel: "Introduce tu contraseña actual para eliminar el registro",
-    inputAttributes: {
-      autocapitalize: "off",
-      autocorrect: "off",
-      autocomplete: "current-password",
-    },
-    showCancelButton: true,
-    confirmButtonText: "Ingresar",
-    cancelButtonText: "Cancelar",
-    background: "#fff",
-    customClass: {
-      input: "password-button",
-      inputLabel: "password-label",
-      confirmButton: "confirmar-button",
-      cancelButton: "cancelar-button",
-      title: "title-alert",
-    }
-    
-  });
+    <h1 className="Login-Cecytem" style={{ marginTop: "-80px" }}>
+      Registro de asistencias
+    </h1>
 
-  if (!passwordInput) return;
-
-  // Verifica la contraseña con el backend
-  const usernameLS = localStorage.getItem("username");
-  const res = await fetch(`${API_URL}/auth/profile/verify-password`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username: usernameLS, password: passwordInput })
-  });
-  const data = await res.json();
-  if (!data.success) {
-    Swal.fire("Error", "Contraseña incorrecta", "error");
-    return; // si es incorrecta
-  }
-
-  Swal.fire({
-    title: '¿Estás seguro?',
-    text: 'Esto eliminará todos los registros de asistencias.',
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'Sí, eliminar',
-    cancelButtonText: 'Cancelar',
-
-    customClass: {
-      confirmButton: "confirmar-button",
-      cancelButton: "cancelar-button",
-    }
-
-  }).then((result) => {
-    if (result.isConfirmed) {
-      fetch(`${API_URL}/auth/asistencias/delete`, { method: 'DELETE' })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            Swal.fire('Eliminado', data.message, 'success');
-            setRegistros([]);
-            setMostrarTabla(false);
-          } else {
-            Swal.fire('Error', 'No se pudieron eliminar los registros', 'error');
-          }
-        })
-        .catch(() => {
-          Swal.fire('Error', 'Error de conexión con el servidor', 'error');
-        });
-    }
-    else{
-      Swal.fire('Cancelado', 'Los registros no fueron eliminados', 'error');
-    }
-  });
-};
-
-
-
-  // Filtra los registros por profesor
-const registrosFiltrados = filtroProfesor
-  ? registros.filter(r => r.nombre.toLowerCase().includes(filtroProfesor.toLowerCase()))
-  : registros;
-
-  
-  return (
-    <div style={{ padding: 32 }}>
-      <header className="InicioS-header">
-        <Link className="InicioS-link2" to={"/auth/index"}>
-          Pagina principal
-        </Link>
-        <Link className="InicioS-link" to={"/auth/uploadCSV"}>
-          Subir archivo
-        </Link>
-      </header>
-      <h1 className="Login-Cecytem" style={{ marginTop: "-80px" }}>
-        Registro de asistencias
-      </h1>
-      <br />
-      <br />
-      {/* Select para elegir profesor */}
-      <div>
-        <label style={{ marginRight: 8, fontSize: "1.1rem", fontWeight: "bold", color: "#8a2036" }}>Filtrar por profesor:</label>
-        <select
-          value={filtroProfesor}
-          style={{ marginRight: 140, padding: 8, borderRadius: 20, border: "1px solid #ccc", borderColor: "rgb(216, 83, 83)", backgroundColor:  "rgb(255, 255, 255)", color: "rgb(0, 0, 0)" }}
-          onChange={(e) => setFiltroProfesor(e.target.value)}
-        >
-          <option value="">Mostrar todos</option>
-
-          {profesores.map((nombre, idx) => (
-            <option key={idx} value={nombre}>
-
-              {nombre}
-            </option>
-          ))}
-        </select>
-        <br />
-        <br />
-        <label htmlFor="buscar" style={{ marginRight: 8, fontSize: "1.1rem", fontWeight: "bold", color: "#8a2036" }}>Buscar</label>
-        <input
-          placeholder="Ingrese el nombre"
-          type="text"
-          id="buscar"
-          style={{ marginRight: 10, padding: 8, borderRadius: 20, border: "1px solid #ccc", borderColor: "rgb(216, 83, 83)", backgroundColor:  "rgb(255, 255, 255)", color: "rgb(0, 0, 0)" }}
-        />
-        <button onClick={() => {
-          setFiltroProfesor(document.getElementById("buscar").value)
-          setMostrarTabla(true)
-          }}  
-          className="Login-button"
-          >Buscar</button>
-
-        {filtroProfesor && (
-          <button
-            style={{ marginLeft: 8, marginTop:8 }}
-            className="Delete-button"
-            onClick={() => {
-              setFiltroProfesor("")
-              input: document.getElementById("buscar").value = "";
-            }}
-          >
-            Limpiar filtro
-          </button>
-        )}
-      </div>
-      <br />
-
-      {!mostrarTabla && (
+    {/* Sección de archivos */}
+    <div style={{ margin: "20px 0" }}>
+      <h3 style={{ color: "#8a2036" }}>Archivos subidos:</h3>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginBottom: "20px" }}>
         <button
           className="Register-button"
-          style={{ marginRight: 10 }}
-          onClick={() => setMostrarTabla(true)}
+          onClick={() => {
+            setArchivoSeleccionado(null);
+            setMostrarTabla(false);
+          }}
         >
-          {fileName || "Mostrar registros"}
+          Mostrar todos
+        </button>
+
+        {archivosSubidos.map((archivo) => (
+          <button
+            key={archivo.name}
+            className="Register-button"
+            onClick={() => {
+              setArchivoSeleccionado(archivo.name);
+              setMostrarTabla(false);
+            }}
+          >
+            {archivo.name}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    {/* Filtros y búsqueda */}
+    <div style={{ marginBottom: "20px", display: "flex", flexWrap: "wrap", gap: "15px" }}>
+      <div>
+        <label style={{ marginRight: "8px", fontWeight: "bold", color: "#8a2036" }}>
+          Filtrar por profesor:
+        </label>
+        <select
+          value={filtroProfesor}
+          onChange={(e) => setFiltroProfesor(e.target.value)}
+          style={{ 
+            padding: "8px", 
+            borderRadius: "20px", 
+            border: "1px solid #d85353",
+            backgroundColor: "#fff"
+          }}
+        >
+          <option value="">Todos los profesores</option>
+          {profesores.map((nombre, idx) => (
+            <option key={idx} value={nombre}>{nombre}</option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label style={{ marginRight: "8px", fontWeight: "bold", color: "#8a2036" }}>
+          Buscar:
+        </label>
+        <input
+          type="text"
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+          placeholder="Buscar en registros..."
+          style={{ 
+            padding: "8px", 
+            borderRadius: "20px", 
+            border: "1px solid #d85353",
+            width: "250px"
+          }}
+        />
+      </div>
+
+      <button
+        className="Delete-button"
+        onClick={() => {
+          setFiltroProfesor("");
+          setBusqueda("");
+        }}
+        disabled={!filtroProfesor && !busqueda}
+      >
+        Limpiar filtros
+      </button>
+
+      {/* Mostrar botón eliminar solo si la tabla está visible y hay registros */}
+      {mostrarTabla && registros.length > 0 && (
+        <button 
+          className="Delete-button" 
+          onClick={handleDelete}
+          style={{ marginLeft: "auto" }}
+        >
+          <i className="fa fa-trash"></i> Eliminar todo
         </button>
       )}
-
-      <button className="Delete-button" onClick={handleDelete}>
-        <i className="fa fa-trash"></i> Eliminar todo
-      </button>
-      <br />
-      <br />
-
-
-{mostrarTabla && registrosFiltrados.length > 0 && (
-  <div style={{ overflowX: "auto", marginBottom: 16 }}>
-    <p style={{ fontSize: "1.1rem", fontWeight: "bold", color: "#8a2036" }}> {registrosFiltrados.length} resultados</p>
-     <button
-            className="Register-button"
-            onClick={() => setMostrarTabla(false)}
-          >
-            Cerrar
-          </button>
-      <br />
-      <br />
-    <table style={{ borderCollapse: "collapse", width: "100%" }}>
-      <thead>
-        <tr>
-          {columns.map((col) => (
-            <th
-              key={col}
-              style={{
-                border: "1px solid #8a2036",
-                padding: "8px",
-                background: "#f7eaea",
-                color: "#8a2036"
-              }}
-            >
-              {col}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        
-        {registrosFiltrados.map((row, idx) => (
-          <tr key={idx}>
-            {columns.map((col) => (
-              <td
-                key={col}
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  background: "#fff"
-                }}
-              >
-                {row[col]}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-     <button
-            className="Register-button"
-            onClick={() => setMostrarTabla(false)}
-          >
-            Cerrar
-          </button>
-  </div>
-)}
-
-{mostrarTabla && registrosFiltrados.length === 0 && filtroProfesor !== "" && (
-    <p style={{ color: "#666" }}>
-      Lo sentimos, pero no se encontró el profesor {filtroProfesor} en la lista de registros.
-    </p>
-)}
     </div>
-  );
+
+    {/* Botón para mostrar/ocultar tabla */}
+    <button
+      className="Register-button"
+      onClick={() => {
+        if (!mostrarTabla) {
+          cargarRegistros();
+        } else {
+          setMostrarTabla(false);
+        }
+      }}
+      style={{ marginBottom: "20px" }}
+    >
+      {mostrarTabla ? "Ocultar tabla" : "Mostrar registros"}
+    </button>
+
+    {/* Mostrar contenido solo si mostrarTabla es true */}
+    {mostrarTabla && (
+      registros.length > 0 ? (
+        <div style={{ overflowX: "auto" }}>
+          <p style={{ fontWeight: "bold", color: "#8a2036" }}>
+            Mostrando {registrosFiltrados.length} registros
+            {archivoSeleccionado && ` del archivo: ${archivoSeleccionado}`}
+          </p>
+
+          {registrosFiltrados.length > 0 ? (
+            <>
+              <table style={{ 
+                borderCollapse: "collapse", 
+                width: "100%",
+                margin: "20px 0",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+              }}>
+                <thead>
+                  <tr>
+                    {columns.map((col) => (
+                      <th
+                        key={col}
+                        style={{
+                          border: "1px solid #8a2036",
+                          padding: "12px",
+                          background: "#f7eaea",
+                          color: "#8a2036",
+                          textAlign: "left"
+                        }}
+                      >
+                        {col}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {registrosFiltrados.map((row, idx) => (
+                    <tr key={idx} style={{ background: idx % 2 === 0 ? "#fff" : "#f9f9f9" }}>
+                      {columns.map((col) => (
+                        <td
+                          key={col}
+                          style={{
+                            border: "1px solid #ddd",
+                            padding: "12px",
+                          }}
+                        >
+                          {row[col] || "-"}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              
+              <button
+                className="Register-button"
+                onClick={() => setMostrarTabla(false)}
+                style={{ marginTop: "10px" }}
+              >
+                Cerrar tabla
+              </button>
+            </>
+          ) : (
+            <p style={{ color: "#666", padding: "20px" }}>
+              No se encontraron registros con los filtros aplicados
+            </p>
+          )}
+        </div>
+      ) : (
+        <div style={{ padding: 32 }}>
+          <h1 className="Login-Cecytem" style={{ marginTop: "-80px" }}>Registros</h1>
+          <p style={{ fontSize: "1.5rem", color: "rgb(0, 0, 0)", fontWeight: "bold" }}>
+            No hay registros actualmente
+          </p>
+          <img src={NF} alt="Not found" style={{ width: "400px", borderRadius: "50%" }} />
+        </div>
+      )
+    )}
+  </div>
+);
+
 }
 
 export default CheckTables;

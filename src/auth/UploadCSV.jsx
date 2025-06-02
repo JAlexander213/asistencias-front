@@ -14,6 +14,7 @@ moment.tz.setDefault('America/Mexico_City');
 function UploadCSV() {
   const [error, setError] = useState(null);
   const [file, setFile] = useState(null);
+  const [subido, setSubido] = useState(false);
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
@@ -39,25 +40,28 @@ function UploadCSV() {
         skipEmptyLines: true,
         complete: function (results) {
           fetch(`${API_URL}/auth/uploadAsistencias`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ registros: results.data })
-          })
-            .then(res => res.json())
-            .then(data => {
-              if (data.success) {
-          localStorage.setItem('uploadedFileName', file.name);
-          Swal.fire({
-            title: "Archivo subido!",
-            text: "Registros guardados correctamente",
-            icon: "success"
-          });
-          navigate("/auth/checkTables");
-          } else {
-            setError("Error al guardar registros");
-          }
-        })
-        .catch(() => setError("Error de conexión con el servidor"));
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ 
+    registros: results.data, 
+    nombreArchivo: file.name 
+  })
+})
+.then(res => res.json())
+.then(data => {
+  if (data.success) {
+    // Guardar archivos subidos
+    const uploadedFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]');
+    uploadedFiles.push({ name: file.name, uploadTime: new Date().toISOString() });
+    localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles));
+    
+    Swal.fire("Éxito", "Archivo subido correctamente", "success");
+    navigate("/auth/checkTables");
+  } else {
+    setError("Error al guardar registros");
+  }
+})
+.catch(() => setError("Error de conexión con el servidor"));
         },
         error: function () {
           setError("Error al leer el archivo CSV.");
@@ -72,24 +76,29 @@ function UploadCSV() {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
         fetch(`${API_URL}/auth/uploadAsistencias`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ registros: jsonData })
-        })
-          .then(res => res.json())
-          .then(data => {
-            if (data.success) {
-              Swal.fire({
-                title: "Archivo subido!",
-                text: "Registros guardados correctamente",
-                icon: "success"
-              });
-              navigate("/auth/checkTables", { state: { fileName: file.name } });
-            } else {
-              setError("Error al guardar registros");
-            }
-          })
-          .catch(() => setError("Error de conexión con el servidor"));
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ registros: jsonData, nombreArchivo: file.name }) // <-- Agregado nombreArchivo aquí
+})
+.then(res => res.json())
+.then(data => {
+  if (data.success) {
+    // Guardar archivos subidos igual que en CSV
+    const uploadedFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]');
+    uploadedFiles.push({ name: file.name, uploadTime: new Date().toISOString() });
+    localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles));
+
+    Swal.fire({
+      title: "Archivo subido!",
+      text: "Registros guardados correctamente",
+      icon: "success"
+    });
+    navigate("/auth/checkTables", { state: { fileName: file.name } });
+  } else {
+    setError("Error al guardar registros");
+  }
+})
+.catch(() => setError("Error de conexión con el servidor"));
       };
       reader.onerror = () => setError("Error al leer el archivo Excel.");
       reader.readAsArrayBuffer(file);
@@ -212,6 +221,8 @@ function UploadCSV() {
         >
           Subir
         </button>
+
+        
         {error && (
           <div
             style={{
