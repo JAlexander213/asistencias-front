@@ -78,7 +78,7 @@ function UploadCSV() {
         fetch(`${API_URL}/auth/uploadAsistencias`, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ registros: jsonData, nombreArchivo: file.name }) // <-- Agregado nombreArchivo aquí
+  body: JSON.stringify({ registros: jsonData, nombreArchivo: file.name }) 
 })
 .then(res => res.json())
 .then(data => {

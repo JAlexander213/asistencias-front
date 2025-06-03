@@ -635,3 +635,24 @@ a:hover::after {
     font-size: 1.2rem; 
   }
 }
+
+.select-archivo{
+  position: relative;
+  display: inline-block;
+  border-radius: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  font-family: Arial, sans-serif;
+  color: #000000;
+  background-color: #f7f7f7;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+.select-archivo:focus{
+  background-color: #dad6d6;
+   outline: none;
+  border: 1px solid #dbd9d9;
+  box-shadow: 0 0 10px rgba(170, 170, 170, 0.3);
+}
