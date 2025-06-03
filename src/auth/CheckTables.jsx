@@ -114,7 +114,7 @@ const registrosFiltrados = registros.filter(registro => {
 });
 
 const columns = registros[0] 
-  ? Object.keys(registros[0])
+  ? Object.keys(registros[0]).filter(col => col !== "fecha_hora") 
   : [];
 
 
