@@ -1,2 +1,2 @@
-const API_URL="https://voiceless-morganne-jalexander213-043c4763.koyeb.app"
+const API_URL="https://asistencias-back.onrender.com"
 export default API_URL

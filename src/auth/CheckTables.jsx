@@ -175,7 +175,7 @@ return (
           value={archivoSeleccionado}
           onChange={(e) => {
             setArchivoSeleccionado(e.target.value);
-            setMostrarTabla(false); // ocultamos tabla al cambiar archivo para evitar confusiones
+            setMostrarTabla(false); 
           }}
         >
           <option value="">Selecciona tu archivo</option>
