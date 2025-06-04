@@ -105,13 +105,16 @@ function Register() {
       setError(data.error || "Error al registrar");
     } else {
       setSuccess("¡Registro exitoso!");
-      localStorage.setItem("auth", "true");
-      localStorage.setItem("username", data.username);
+      localStorage.setItem("username", data.user.username);
       Swal.fire({
         title: "Registro exitoso!",
-        text: "Bienvenido " + data.name,
+        text: "Bienvenido " + data.user.name,
         icon: "success"
       });
+      localStorage.setItem("auth", "true");
+      localStorage.setItem("username", data.user.username);
+      localStorage.setItem("name", data.user.name);
+      localStorage.setItem("photo", data.user.photo);
       navigate("/auth/index", { replace: true });
     }
   } catch (error) {
