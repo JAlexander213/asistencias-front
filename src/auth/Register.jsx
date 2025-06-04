@@ -89,7 +89,7 @@ function Register() {
     formData.append("photo", photo);
 
     const response = await fetch(`${API_URL}/auth/register`, {
-      method: 'POST',
+    method: 'POST',
       body: formData, 
     }); 
     const data = await response.json();
