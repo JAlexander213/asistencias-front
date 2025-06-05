@@ -107,7 +107,7 @@ function CheckTables() {
         headers: { 'Content-Type': 'application/json' }
       });
       if (res.ok) {
-        Swal.fire('Eliminado', 'Se eliminaron ' + registros.length + ' registros del archivo ' + archivoSeleccionado, 'true', 'success');
+        Swal.fire('Eliminado', 'Se eliminaron ' + registros.length + ' registros del archivo ' + archivoSeleccionado, 'success');
         setRegistros([]);
         setMostrarTabla(false);
       } else {
