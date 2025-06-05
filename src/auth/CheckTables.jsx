@@ -57,7 +57,7 @@ function CheckTables() {
   try {
     Swal.fire({
       title: "Cargando...",
-      html: "Se está cargando el archivo. Por favor espere.",
+      html: "Cargando archivo. Por favor espere.",
       showLoading: true,
       timerProgressBar: true,
       didOpen: () => {
