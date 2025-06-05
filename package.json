@@ -16,7 +16,8 @@
     "react-scripts": "5.0.1",
     "sweetalert2": "^11.21.2",
     "web-vitals": "^2.1.4",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "luxon": "^x.x.x"
   },
   "scripts": {
     "start": "react-scripts start",
