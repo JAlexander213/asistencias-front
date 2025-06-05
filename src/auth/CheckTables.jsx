@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { useNavigate, Link } from "react-router-dom";
 import NF from "./../img/NF.png";
 import API_URL from "../Api";
+import { DateTime } from "luxon";
 
 function CheckTables() {
   const [registros, setRegistros] = useState([]);
@@ -52,25 +53,41 @@ function CheckTables() {
   };
 
   const cargarRegistros = async () => {
-    try {
-      let url = `${API_URL}/auth/asistencias`;
-      if (archivoSeleccionado) {
-        url = `${API_URL}/auth/asistencias/${encodeURIComponent(archivoSeleccionado)}`;
+    let timerInterval;
+  try {
+    Swal.fire({
+      title: "Cargando...",
+      html: "Se está cargando el archivo. Por favor espere.",
+      showLoading: true,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
       }
+    });
 
-      const res = await fetch(url);
-      const data = await res.json();
-      
-      if (Array.isArray(data)) {
-        setRegistros(data);
-        setMostrarTabla(true);
-      } else {
-        setError("Formato de datos inválido");
-      }
-    } catch (err) {
-      setError("Error al cargar registros");
+    let url = `${API_URL}/auth/asistencias`;
+    if (archivoSeleccionado) {
+      url = `${API_URL}/auth/asistencias/${encodeURIComponent(archivoSeleccionado)}`;
     }
-  };
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (Array.isArray(data)) {
+      setRegistros(data);
+      setMostrarTabla(true);
+    } else {
+      setError("Formato de datos inválido");
+    }
+  } catch (err) {
+    setError("Error al cargar registros");
+  } finally {
+    Swal.close();
+  }
+};
 
   const handleDelete = async () => {
   const result = await Swal.fire({
@@ -90,7 +107,7 @@ function CheckTables() {
         headers: { 'Content-Type': 'application/json' }
       });
       if (res.ok) {
-        Swal.fire('Eliminado', 'Se eliminaron ' + registros.length + ' registros.', 'success');
+        Swal.fire('Eliminado', 'Se eliminaron ' + registros.length + ' registros del archivo ' + archivoSeleccionado, 'true', 'success');
         setRegistros([]);
         setMostrarTabla(false);
       } else {
@@ -113,9 +130,10 @@ const registrosFiltrados = registros.filter(registro => {
   return cumpleArchivo && cumpleProfesor && cumpleBusqueda;
 });
 
-const columns = registros[0] 
-  ? Object.keys(registros[0]).filter(col => col !== "fecha_hora") 
+const columns = registros[0]
+  ? Object.keys(registros[0]).filter(col => col !== "fecha_hora_formateada")
   : [];
+
 
 
 if (error) {
@@ -323,8 +341,12 @@ return (
                             padding: "12px",
                           }}
                         >
-                          {row[col] || "-"}
+                          {col === "fecha_hora"
+  ? DateTime.fromISO(row[col], { zone: "utc" }).toFormat("yyyy-MM-dd HH:mm")
+  : row[col] || "-"}
+
                         </td>
+                       
                       ))}
                     </tr>
                   ))}

@@ -24,10 +24,22 @@ function UploadCSV() {
   };
 
   const handleUpload = () => {
+    let timerInterval;
     if (!file) {
       setError("Selecciona un archivo primero.");
       return;
     }
+     Swal.fire({
+    title: "Subiendo archivo...",
+    html: "Se está subiendo el archivo. Por favor espere.",
+    timerProgressBar: true,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+    willClose: () => {
+      clearInterval(timerInterval);
+    }
+  });
     const fileName = file.name.toLowerCase();
     if (!(fileName.endsWith(".csv") || fileName.endsWith(".xlsx") || fileName.endsWith(".xls"))) {
       setError("Por favor, selecciona un archivo CSV o Excel (.xlsx, .xls).");
@@ -39,28 +51,29 @@ function UploadCSV() {
         header: true,
         skipEmptyLines: true,
         complete: function (results) {
-          fetch(`${API_URL}/auth/uploadAsistencias`, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ 
-    registros: results.data, 
-    nombreArchivo: file.name 
-  })
-})
-.then(res => res.json())
-.then(data => {
-  if (data.success) {
-    // Guardar archivos subidos
-    const uploadedFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]');
-    uploadedFiles.push({ name: file.name, uploadTime: new Date().toISOString() });
-    localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles));
-    
-    Swal.fire("Éxito", "Archivo subido correctamente", "success");
-    navigate("/auth/checkTables");
-  } else {
-    setError("Error al guardar registros");
-  }
-})
+      fetch(`${API_URL}/auth/uploadAsistencias`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          registros: results.data, 
+          nombreArchivo: file.name 
+        })
+      })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        // Guardar archivos subidos
+        const uploadedFiles = JSON.parse(localStorage.getItem('uploadedFiles') || '[]');
+        uploadedFiles.push({ name: file.name, uploadTime: new Date().toISOString() });
+        localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles));
+
+        Swal.fire("Éxito", "Archivo subido correctamente", "success");
+        Swal.close();
+        navigate("/auth/checkTables");
+      } else {
+        setError("Error al guardar registros");
+      }
+      })
 .catch(() => setError("Error de conexión con el servidor"));
         },
         error: function () {

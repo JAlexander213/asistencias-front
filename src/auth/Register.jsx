@@ -28,7 +28,6 @@ function Register() {
   const trimmedUser = user.trim();
   const trimmedPassword = password.trim();
 
-  // Validar que no sean solo espacios
   if (!trimmedName || !trimmedUser || !trimmedPassword) {
     Swal.fire({
       icon: "error",
@@ -39,7 +38,6 @@ function Register() {
     return;
   }
 
-  // Validar que el nombre solo tenga letras (puedes permitir acentos y espacios entre palabras)
   if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(trimmedName)) {
     Swal.fire({
       icon: "error",
