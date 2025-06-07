@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import API_URL from "../Api";
+import vacio from "../img/vacio.png";
 
 function Register() {
   const [name, setName] = useState("");
@@ -128,7 +129,7 @@ function Register() {
     if (file) {
       setPreview(URL.createObjectURL(file));
     } else {
-      setPreview("");
+      setPreview();
     }
   };
 
@@ -167,14 +168,31 @@ function Register() {
               boxShadow: "0 4px 16px rgba(138,32,54,0.15)",
               margin: "12px auto 16px auto",
               display: "block",
+              marginBottom: "-16px",
               background: "#fff"
             }}
             alt="Foto de perfil seleccionada"
           />
         )}
+        {!preview && (
+          <img
+            src={vacio}
+            style={{
+              borderRadius: "50%",
+              width: "120px",
+              height: "120px",
+              display: "block",
+              margin: "12px auto 16px auto",
+              marginBottom: "-16px",
+              background: "#fff"
+            }}
+            alt="Foto de perfil seleccionada"
+          />
+        )}
+
       </div>
 
-        {loading && (
+  {loading && (
   <div style={{
     display: "flex", justifyContent: "center", alignItems: "center", margin: "20px"
   }}>

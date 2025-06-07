@@ -169,6 +169,31 @@ swalWithBootstrapButtons.fire({
         </button>
           </div>
 
+
+          <div className="uploadCSV-button">
+          <button
+          style={{
+            width: "100%",
+            padding: "10px 16px",
+            background: "none",
+            border: "none",
+            textAlign: "left",
+            cursor: "pointer",
+            fontSize: "1rem",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px"
+          }}
+          onClick={() => {
+            setMenuOpen(false);
+            navigate("/auth/uploadCSV");
+          }}
+        >
+          <i className="ion-calendar" style={{ fontSize: "1.2rem", color: "#111" }}></i>
+          Horarios
+        </button>
+          </div>
+
           <div className="ajustes-button">
         <button
           style={{

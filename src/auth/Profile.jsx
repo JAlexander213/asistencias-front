@@ -154,7 +154,12 @@ function Profile() {
     icon: "warning",
     showCancelButton: true,
     confirmButtonText: "Sí, eliminar",
-    cancelButtonText: "Cancelar"
+    cancelButtonText: "Cancelar",
+
+    customClass:{
+      confirmButton: "confirmar-button",
+      cancelButton: "cancelar-button"
+    }
   });
 
   if (confirm.isConfirmed) {
