@@ -342,11 +342,9 @@ return (
                           }}
                         >
                           {col === "fecha_hora"
-  ? DateTime.fromISO(row[col], { zone: "utc" }).toFormat("yyyy-MM-dd HH:mm")
-  : row[col] || "-"}
-
+                          ? DateTime.fromISO(row[col], { zone: "utc" }).toFormat("yyyy-MM-dd HH:mm")
+                          : row[col] || "-"}
                         </td>
-                       
                       ))}
                     </tr>
                   ))}

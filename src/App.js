@@ -11,6 +11,8 @@ import Profile from './auth/Profile.jsx';
 import Settings from './auth/Settings.jsx';
 import UploadCSV from './auth/UploadCSV.jsx';
 import CheckTables from './auth/CheckTables.jsx';
+import Schedules from './auth/Schedules.jsx';
+import { Menu } from './auth/Menu.jsx';
 
 function MainContent() {
   const navigate = useNavigate();
@@ -129,6 +131,22 @@ function App() {
           element={
             <ProtectedRoute>
               <Settings />
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/auth/schedules"
+          element={
+            <ProtectedRoute>
+              <Schedules />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/auth/Menu"
+          element={
+            <ProtectedRoute>
+              <Menu />
             </ProtectedRoute>
           }
         />

@@ -8,6 +8,7 @@ function Index() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef();
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const [user, setUser] = useState(null);
   const [name, setName] = useState("");
@@ -86,14 +87,15 @@ swalWithBootstrapButtons.fire({
 });
   };
 
+
   const CheckTables= () => {
     navigate("/auth/checkTables", { replace: true });
   }
+ 
 
   return (
     <>
     <header className="InicioS-header" style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", padding: "10px 20px" }}>
-    
   <div style={{ position: "relative" }} ref={menuRef}>
     <i
       className="ion-navicon-round"
@@ -120,7 +122,7 @@ swalWithBootstrapButtons.fire({
           zIndex: 100
         }}
       >
-        <div className="accountI-button">
+        <div className="menu-buttons">
 
         <button
           style={{
@@ -145,7 +147,7 @@ swalWithBootstrapButtons.fire({
         </button>
         </div>
           
-          <div className="uploadCSV-button">
+          <div className="menu-buttons">
           <button
           style={{
             width: "100%",
@@ -170,7 +172,7 @@ swalWithBootstrapButtons.fire({
           </div>
 
 
-          <div className="uploadCSV-button">
+          <div className="menu-buttons">
           <button
           style={{
             width: "100%",
@@ -186,7 +188,8 @@ swalWithBootstrapButtons.fire({
           }}
           onClick={() => {
             setMenuOpen(false);
-            navigate("/auth/uploadCSV");
+            navigate("/auth/schedules");
+
           }}
         >
           <i className="ion-calendar" style={{ fontSize: "1.2rem", color: "#111" }}></i>
@@ -234,17 +237,25 @@ swalWithBootstrapButtons.fire({
 
   
   <div style={{  marginTop: "14vh", marginBottom: "-10vh",display: "flex", alignItems: "center", gap: "10px" }}>
-    <img 
-    src={photo}
-      style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover" }}
-        onLoad={(e) => {
-        e.target.src = photo; 
-        }}
-      onError={(e) => {
-        e.target.src = {vacio}; 
-      }}
-      />
     
+  <img 
+    src={photo}
+    style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover" }}
+    onLoad={(e) => {
+    setImageLoaded(true);
+    }}
+    onError={(e) => {
+    setImageLoaded(false);
+    }}
+  />
+
+  {!imageLoaded && (
+    <img 
+      src={vacio}
+      style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover", marginLeft: "0%", position: "absolute" }}
+    />
+  )}
+   
     <span style={{ fontWeight: "bold", color: "#8a2036", fontSize: "1.2rem"}}>{name}</span>
   </div>
       <h3 className="Login-Cecytem">

@@ -179,7 +179,36 @@ function Profile() {
 };
 
 
-  if (!user) return <div>Cargando perfil...</div>;
+  if (!user) return (
+   <>
+  <div style={{ marginTop: "40px", fontSize: "2rem", color: "#8a2036" , textAlign: "center", fontWeight: "bold"}}>
+    Cargando perfil...
+  </div>;
+  <br />
+            <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              margin: "20px",
+            }}
+          >
+            <div
+              style={{
+                border: "4px solid #f3f3f3",
+                borderTop: "4px solid #8a2036",
+                borderRadius: "50%",
+                width: "40px",
+                height: "40px",
+                animation: "spin 1s linear infinite",
+              }}
+            />
+            <style>
+              {`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}
+            </style>
+          </div>
+  </>
+  )
 
   return (
     <div style={{

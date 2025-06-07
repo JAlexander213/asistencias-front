@@ -505,24 +505,16 @@ a:hover::after {
 .cerrarText-sesion-button:hover{
   color: #fff;
 }
-.uploadCSV-button{
+.menu-buttons{
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
   transition: 0.1s;
 }
-.uploadCSV-button:hover{
-  background-color: #25f069;
+.menu-buttons:hover{
+  background-color: #c9c9c9;
 }
-.accountI-button{
-  border-radius: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.1s;
-}
-.accountI-button:hover{
-  background-color: #f1ef65;
-}
+
 
 .grid-container {
   display: grid;
