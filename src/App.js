@@ -17,7 +17,7 @@ import hello from './img/hello.png';
 import info from './img/info.png';
 import soporte from './img/soporte.png';
 import settings from './img/settings.png';
-import Collage from './img/Collage.pdf';
+import NoHay from './img/NoHay.pdf';
 function MainContent() {
   const navigate = useNavigate();
   
@@ -64,12 +64,12 @@ function MainContent() {
             <img src={info}></img>
           </div>
           <div className="card">
-  <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#fff' }}>Manual de Usuario</h2>
-  <br/>
-  <p style={{ fontFamily: 'Arial, sans-serif', color: '#fff' }}>En caso de que tengas alguna duda de su funcionamiento, <br/> Haz click en el boton de manual de usuario para obtener más información</p>
-    <button onClick={() => window.open(Collage)} className='soporte-button'>Manual de Usuario <i className="ion-android-arrow-forward"></i></button>
-  <img src={soporte}></img>
-</div>
+          <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#fff' }}>Manual de Usuario</h2>
+          <br/>
+          <p style={{ fontFamily: 'Arial, sans-serif', color: '#fff' }}>En caso de que tengas alguna duda de su funcionamiento, <br/> Haz click en el boton de manual de usuario para obtener más información</p>
+          <button onClick={() => window.open(NoHay)} className='soporte-button'>Manual de Usuario <i className="ion-android-arrow-forward"></i></button>
+          <img src={soporte}></img>
+        </div>
           <div className="card">
             <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#fff' }}>¿Cómo Acceder?</h2>
             <br/>
