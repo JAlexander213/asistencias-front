@@ -250,10 +250,13 @@ swalWithBootstrapButtons.fire({
   />
 
   {!imageLoaded && (
+    <>
     <img 
       src={vacio}
       style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover", marginLeft: "0%", position: "absolute" }}
     />
+    <span style={{ fontWeight: "bold", color: "#8a2036", fontSize: "1.2rem"}}>Cargando...</span>
+    </>
   )}
    
     <span style={{ fontWeight: "bold", color: "#8a2036", fontSize: "1.2rem"}}>{name}</span>

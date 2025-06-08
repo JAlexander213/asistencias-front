@@ -13,7 +13,11 @@ import UploadCSV from './auth/UploadCSV.jsx';
 import CheckTables from './auth/CheckTables.jsx';
 import Schedules from './auth/Schedules.jsx';
 import { Menu } from './auth/Menu.jsx';
-
+import hello from './img/hello.png';
+import info from './img/info.png';
+import soporte from './img/soporte.png';
+import settings from './img/settings.png';
+import Collage from './img/Collage.pdf';
 function MainContent() {
   const navigate = useNavigate();
   
@@ -45,30 +49,39 @@ function MainContent() {
         
         <div className="grid-container">
           <div className="card">
-            <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#8a2036' }}>Bienvenido 
+            <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#fff' }}>Bienvenido 
               <br/>
               a CIM</h2> 
-            <p style={{ fontFamily: 'Arial, sans-serif', color: '#000' }}>CIM <br/>(Cecytem Information Manager) <br/>Es un sistema amigable que se encarga de proteger tu informacion </p>
-            <p style={{ fontFamily: 'Arial, sans-serif', color: '#000' }}>Aquí podrás registrar tu asistencia y inasistencia de manera fácil y segura.</p>
+              <img src={hello}></img>
+            <p style={{ fontFamily: 'Arial, sans-serif', color: '#fff' }}>CIM <br/>(Cecytem Information Manager) <br/>Es un sistema amigable que se encarga de proteger tu informacion </p>
+            <p style={{ fontFamily: 'Arial, sans-serif', color: '#fff' }}>Aquí podrás registrar tu asistencia y inasistencia de manera fácil y segura.</p>
           </div>
           <div className="card">
-            <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#8a2036' }}>Información Adicional</h2>
-            <p style={{ fontFamily: 'Arial, sans-serif', color: '#000' }}>Consulta tu informacion y gestiona comodamente los datos.</p>
+            <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#fff' }}>Información Adicional</h2>
+            <p style={{ fontFamily: 'Arial, sans-serif', color: '#fff' }}>Este es un sistema desarrollado  <br/>para el Colegio de Estudios Científicos <br/>y Tecnológicos del Estado de México <br/>
+            con el objetivo de facilitar la gestión de datos y de informacion de los profesores.
+            </p>
+            <img src={info}></img>
           </div>
           <div className="card">
-            <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#8a2036' }}>Soporte</h2>
+  <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#fff' }}>Manual de Usuario</h2>
+  <br/>
+  <p style={{ fontFamily: 'Arial, sans-serif', color: '#fff' }}>En caso de que tengas alguna duda de su funcionamiento, <br/> Haz click en el boton de manual de usuario para obtener más información</p>
+    <button onClick={() => window.open(Collage)} className='soporte-button'>Manual de Usuario <i className="ion-android-arrow-forward"></i></button>
+  <img src={soporte}></img>
+</div>
+          <div className="card">
+            <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#fff' }}>¿Cómo Acceder?</h2>
             <br/>
-            <p style={{ fontFamily: 'Arial, sans-serif', color: '#000' }}>En caso de tener problemas, <br/> Haz una consulta con el desarrollador de la pagina</p>
-          </div>
-          <div className="card">
-            <h2 style={{ fontFamily: 'Arial, sans-serif', fontWeight: 'bold', color: '#8a2036' }}>Recursos</h2>
-            <p style={{ fontFamily: 'Arial, sans-serif', color: '#000' }}> Accede a materiales y recursos útiles para tu aprendizaje.</p>
+            <p style={{ fontFamily: 'Arial, sans-serif', color: '#fff' }}> Solicita tu informacion al personal administrativo de tu colegio,
+              para obtener tus credenciales <br/>las cuales son necesarias para ingresar al sistema y<br/>a múltiples funciones de gestion de informacion en <strong>CIM</strong></p>
+            <img src={settings}></img>
           </div>
         </div>
       </div>
 <footer className="bg-white text-black py-8 border-t border-gray-300">
   <div className="container mx-auto text-center">
-    <h2 style={{ marginBottom: '20px', marginRight: '10px' }}>Contáctanos</h2>
+    <h2 style={{ marginBottom: '20px', marginRight: '10px' }}>Nuestras Redes Sociales</h2>
     <div className="flex justify-center space-x-6 mb-4">
       <Link to="https://www.facebook.com/somoscecytem" target="_blank" rel="noopener noreferrer" className="InicioS-facebook-link">
         <i className="fab fa-facebook fa-2x"></i>
@@ -150,6 +163,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route path="*" element={<MainContent />} />
       </Routes>
     </div>

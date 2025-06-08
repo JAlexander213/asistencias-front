@@ -524,17 +524,73 @@ a:hover::after {
 }
 
 .card {
-  background-color: rgb(255, 255, 255);
-  border: 1px solid #a79e9e;
+  background-color: #6b1728;
+  border: 2px solid #831e32;
   border-radius: 8px;
   padding: 15px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 10px #6b1728;
   transition: transform 0.2s;
+  overflow: hidden;
+}
+
+.card img {
+  background-color: #ffffff;
+  border-radius: 100%;
+  position: absolute;
+  margin-top: 35%;
+  object-fit: cover;
+  width: 90%;
+  height: 60%;
+  transition: transform 0.4s ease-in-out;
+}
+
+.card p {
+  margin-top: 20px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+.card button {
+  margin-top: 20px;
+  visibility: hidden;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;
 }
 
 .card:hover {
   transform: scale(1.05);
 }
+
+.card:hover img {
+  transform: translateY(130%);
+
+}
+
+.card:hover p, .card:hover button {
+  visibility: visible;
+  opacity: 1;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+.soporte-button{
+  background: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transform: 0.2s;
+}
+
+.soporte-button:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
 .confirmar-button{
   background: #217ffa;
   color: #fff;
